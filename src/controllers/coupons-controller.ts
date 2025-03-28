@@ -7,6 +7,7 @@ import { z } from "zod"
 class CouponsController {
   async update(request: Request, response: Response, next: NextFunction) {
     try {
+      console.log("coupons update")
       const paramsSchema = z.object({
         market_id: z.string().uuid(),
       })
@@ -21,12 +22,12 @@ class CouponsController {
         throw new AppError("Estabelecimento não encontrado!", 404)
       }
 
-      if (market.cupons <= 0) {
+      if (market.coupons <= 0) {
         throw new AppError("Não há cupom disponível no momento!")
       }
 
       await prisma.market.update({
-        data: { cupons: { decrement: 1 } },
+        data: { coupons: { decrement: 1 } },
         where: { id: market_id },
       })
 
